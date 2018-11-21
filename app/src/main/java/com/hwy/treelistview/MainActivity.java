@@ -45,24 +45,27 @@ public class MainActivity extends AppCompatActivity {
             bean.initParentId();
         }
 
+        mListView.setAdapter(
+                mAdapter = new TreeAdapter<TreeBean>(this, list, R.layout.adapter_tree_layout) {
+                    @Override
+                    protected void convert(TreeViewHolder holder, Node<TreeBean> node,
+                                           int position, ViewGroup parent) {
+                        // 操作Item布局
+                        holder.setText(R.id.tv_name, node.getRawData().getName());
 
-        mListView.setAdapter(mAdapter = new TreeAdapter<TreeBean>(this, list, R.layout.adapter_tree_layout) {
-            @Override
-            protected void convert(TreeViewHolder holder, Node<TreeBean> node, int position, ViewGroup parent) {
-                // 操作Item布局
-                holder.setText(R.id.tv_name, node.getRawData().getName());
 
-
-                // 设置选中的图标
-                updateCheckedNodeIcon(holder, R.id.iv_checked, node, R.drawable.icon_checked_circle, R.drawable.icon_unchecked_circle);
-                // 设置具体点击哪个View来操作选中事件
-                setCheckedNodeListener(holder, R.id.ll_convert_view, node);
-                // 设置展开/折叠的图标
-                updateExpendOrCollapseIcon(holder, R.id.iv_arrow, node, R.drawable.icon_tree_down, R.drawable.icon_tree_right);
-                // 设置具体点击哪个View来操作展开/折叠功能
-                setExpendOrCollapseListener(holder, R.id.iv_arrow, position);
-            }
-        });
+                        // 设置选中的图标到具体的View
+                        updateCheckedNodeIcon(holder, R.id.iv_checked, node,
+                                R.drawable.icon_checked_circle, R.drawable.icon_unchecked_circle);
+                        // 设置具体点击哪个View来操作选中事件
+                        setCheckedNodeListener(holder, R.id.ll_convert_view, node);
+                        // 设置展开/折叠的图标到具体的View
+                        updateExpendOrCollapseIcon(holder, R.id.iv_arrow, node,
+                                R.drawable.icon_tree_down, R.drawable.icon_tree_right);
+                        // 设置具体点击哪个View来操作展开/折叠功能
+                        setExpendOrCollapseListener(holder, R.id.iv_arrow, position);
+                    }
+                });
 
         // 设置默认选中的数据
         Node<TreeBean> node = (Node<TreeBean>) mAdapter.getItem(0);
@@ -81,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     if (checkedNodes.size() < 3) {
                         checkedNodes.add(currentNode);
                     } else {
-                        Toast.makeText(mContext, "最多只能选择 " + checkedNodes.size() + " 个", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext,
+                                "最多只能选择 " + checkedNodes.size() + " 个",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -92,12 +97,13 @@ public class MainActivity extends AppCompatActivity {
 //                    if (checkedNodes.isEmpty()) {
 //                        checkedNodes.add(currentNode);
 //                    } else {
-//                        Toast.makeText(mContext, "当前已选: " + checkedNodes.get(0).getRawData().getName(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mContext,
+//                                "当前已选: " + checkedNodes.get(0).getRawData().getName(),
+//                                Toast.LENGTH_SHORT).show();
 //                    }
 //                }
             }
         });
-
 
     }
 
